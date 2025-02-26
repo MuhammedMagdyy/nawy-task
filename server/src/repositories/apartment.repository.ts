@@ -1,5 +1,7 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import { prismaClient } from '../config';
+import { IPaginationQuery } from '../interfaces';
+import { getPagination } from '../utils';
 
 export class apartmentRepository {
   constructor(private readonly prismaClient: PrismaClient) {}
@@ -8,8 +10,11 @@ export class apartmentRepository {
     return this.prismaClient.apartment.create({ data });
   }
 
-  async getApartments() {
-    return this.prismaClient.apartment.findMany();
+  async getApartments(paginationOptions: IPaginationQuery) {
+    return this.prismaClient.apartment.findMany({
+      ...getPagination(paginationOptions),
+      orderBy: { id: 'desc' },
+    });
   }
 
   async getApartment(id: number) {

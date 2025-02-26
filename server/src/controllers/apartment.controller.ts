@@ -1,7 +1,11 @@
 import asyncHandler from 'express-async-handler';
 import { apartmentService } from '../services';
 import { CREATED, OK } from '../utils';
-import { apartmentSchema, paramsSchema } from '../utils/validations';
+import {
+  apartmentSchema,
+  paramsSchema,
+  paginationSchema,
+} from '../utils/validations';
 
 export const createApartmentHandler = asyncHandler(async (req, res) => {
   const parsedApartmentData = apartmentSchema.parse(req.body);
@@ -11,7 +15,11 @@ export const createApartmentHandler = asyncHandler(async (req, res) => {
 });
 
 export const getApartmentsHandler = asyncHandler(async (req, res) => {
-  const apartments = await apartmentService.getApartments();
+  const { pageNumber, pageSize } = paginationSchema.parse(req.query);
+  const apartments = await apartmentService.getApartments({
+    pageNumber,
+    pageSize,
+  });
 
   res.status(OK).json({ data: apartments });
 });
