@@ -1,7 +1,9 @@
 import 'dotenv/config';
 import express from 'express';
-import { logger } from './utils';
 import { port, prismaClient } from './config';
+import { errorHandler } from './middlewares';
+import routes from './routes';
+import { logger } from './utils';
 
 const app = express();
 
@@ -12,6 +14,8 @@ app.get('/', (_, res) => {
 });
 
 app.use(express.json({ limit: '5mb' }));
+app.use('/api/v1', routes);
+app.use(errorHandler);
 
 export const up = async () => {
   try {
