@@ -1,18 +1,7 @@
-import 'dotenv/config';
-import express from 'express';
+import * as server from './server';
 import { logger } from './utils';
-import { port } from './config';
 
-const app = express();
-
-app.use(express.json());
-
-app.get('/', (_, res) => {
-  res.send(
-    '<div style="text-align: center; margin-top: 20px;"><h1>Welcome to Apartments API 🚀</h1></div>'
-  );
-});
-
-app.listen(port, () => {
-  logger.info(`Server is running on port ${port} 🚀`);
+server.up().catch((error) => {
+  logger.error(`Error occurred while starting the server: ${error} ❌`);
+  process.exit(1);
 });
