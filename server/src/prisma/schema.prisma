@@ -7,6 +7,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("users")
+}
+
 model Apartment {
   id          Int      @id @default(autoincrement())
   name        String
@@ -18,4 +29,6 @@ model Apartment {
   imageUrl    String   @map("image_url")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @default(now()) @map("updated_at")
+
+  @@map("apartments")
 }
