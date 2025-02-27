@@ -1,14 +1,26 @@
 import asyncHandler from 'express-async-handler';
 import { apartmentService } from '../services';
-import { CREATED, OK } from '../utils';
+import { ApiError, BAD_REQUEST, CREATED, OK } from '../utils';
 import {
   apartmentSchema,
   paramsSchema,
   paginationSchema,
 } from '../utils/validations';
+import { cloudinaryService } from '../services/cloudinary.service';
 
 export const createApartmentHandler = asyncHandler(async (req, res) => {
-  const parsedApartmentData = apartmentSchema.parse(req.body);
+  if (!req.file) {
+    throw new ApiError('Please upload an image', BAD_REQUEST);
+  }
+
+  const { image } = await cloudinaryService.uploadImage(req.file.path);
+
+  const parsedBody = JSON.parse(req.body.data);
+
+  const parsedApartmentData = apartmentSchema.parse({
+    ...parsedBody,
+    imageUrl: image,
+  });
   const apartment = await apartmentService.createApartment(parsedApartmentData);
 
   res.status(CREATED).json({ data: apartment });
