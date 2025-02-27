@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { apartmentRepository, ApartmentRepository } from '../repositories';
-import { ApiError } from '../utils';
+import { ApiError, NOT_FOUND } from '../utils';
 import { IFilterQuery, IPaginationQuery } from '../interfaces';
 
 export class ApartmentService {
@@ -28,7 +28,7 @@ export class ApartmentService {
     const apartment = await this.getApartment(id);
 
     if (!apartment) {
-      throw new ApiError('Apartment not found', 404);
+      throw new ApiError('Apartment not found', NOT_FOUND);
     }
 
     return apartment;
