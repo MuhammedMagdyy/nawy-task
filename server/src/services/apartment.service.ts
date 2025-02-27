@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { apartmentRepo, apartmentRepository } from '../repositories';
 import { ApiError } from '../utils';
-import { IPaginationQuery } from '../interfaces';
+import { IFilterQuery, IPaginationQuery } from '../interfaces';
 
 export class ApartmentService {
   constructor(private readonly apartmentRepository: apartmentRepository) {}
@@ -10,8 +10,14 @@ export class ApartmentService {
     return this.apartmentRepository.createApartment(data);
   }
 
-  async getApartments(paginationOptions: IPaginationQuery) {
-    return this.apartmentRepository.getApartments(paginationOptions);
+  async getApartments(
+    paginationOptions: IPaginationQuery,
+    filterOptions: IFilterQuery
+  ) {
+    return this.apartmentRepository.getApartments(
+      paginationOptions,
+      filterOptions
+    );
   }
 
   async getApartment(id: number) {

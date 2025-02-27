@@ -7,6 +7,7 @@ import {
   paginationSchema,
 } from '../utils/validations';
 import { cloudinaryService } from '../services/cloudinary.service';
+import { IFilterQuery } from '../interfaces';
 
 export const createApartmentHandler = asyncHandler(async (req, res) => {
   if (!req.file) {
@@ -27,11 +28,22 @@ export const createApartmentHandler = asyncHandler(async (req, res) => {
 });
 
 export const getApartmentsHandler = asyncHandler(async (req, res) => {
+  const { unitName, unitNumber, project, minPrice, maxPrice } =
+    req.query as IFilterQuery;
   const { pageNumber, pageSize } = paginationSchema.parse(req.query);
-  const apartments = await apartmentService.getApartments({
-    pageNumber,
-    pageSize,
-  });
+  const apartments = await apartmentService.getApartments(
+    {
+      pageNumber,
+      pageSize,
+    },
+    {
+      unitName,
+      unitNumber,
+      project,
+      minPrice: minPrice ? +minPrice : undefined,
+      maxPrice: maxPrice ? +maxPrice : undefined,
+    }
+  );
 
   res.status(OK).json({ data: apartments });
 });

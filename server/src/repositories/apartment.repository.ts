@@ -1,7 +1,7 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import { prismaClient } from '../config';
-import { IPaginationQuery } from '../interfaces';
-import { getPagination } from '../utils';
+import { IFilterQuery, IPaginationQuery } from '../interfaces';
+import { ApartmentFilterBuilder } from '../utils';
 
 export class apartmentRepository {
   constructor(private readonly prismaClient: PrismaClient) {}
@@ -10,10 +10,28 @@ export class apartmentRepository {
     return this.prismaClient.apartment.create({ data });
   }
 
-  async getApartments(paginationOptions: IPaginationQuery) {
+  async getApartments(
+    paginationOptions: IPaginationQuery,
+    filterOptions: IFilterQuery
+  ) {
+    const apartmentFilterBuilder = new ApartmentFilterBuilder()
+      .withTextSearch({
+        unitName: filterOptions.unitName,
+        unitNumber: filterOptions.unitNumber,
+        project: filterOptions.project,
+      })
+      .withPriceRange({
+        minPrice: filterOptions.minPrice,
+        maxPrice: filterOptions.maxPrice,
+      })
+      .withPagination(paginationOptions);
+
+    const { skip, take, ...where } = apartmentFilterBuilder.build();
     return this.prismaClient.apartment.findMany({
-      ...getPagination(paginationOptions),
-      orderBy: { id: 'desc' },
+      where,
+      skip,
+      take,
+      orderBy: { createdAt: 'desc' },
     });
   }
 
