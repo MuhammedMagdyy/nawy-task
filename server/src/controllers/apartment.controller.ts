@@ -1,12 +1,11 @@
 import asyncHandler from 'express-async-handler';
-import { apartmentService } from '../services';
+import { apartmentService, cloudinaryService } from '../services';
 import { ApiError, BAD_REQUEST, CREATED, OK } from '../utils';
 import {
   apartmentSchema,
   paramsSchema,
   paginationSchema,
 } from '../utils/validations';
-import { cloudinaryService } from '../services/cloudinary.service';
 import { IFilterQuery } from '../interfaces';
 
 export const createApartmentHandler = asyncHandler(async (req, res) => {
