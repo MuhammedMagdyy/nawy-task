@@ -3,7 +3,7 @@ import { prismaClient } from '../config';
 import { IFilterQuery, IPaginationQuery } from '../interfaces';
 import { ApartmentFilterBuilder } from '../utils';
 
-export class apartmentRepository {
+export class ApartmentRepository {
   constructor(private readonly prismaClient: PrismaClient) {}
 
   async createApartment(data: Prisma.ApartmentUncheckedCreateInput) {
@@ -40,4 +40,6 @@ export class apartmentRepository {
   }
 }
 
-export const apartmentRepo = new apartmentRepository(prismaClient.getClient());
+export const apartmentRepository = new ApartmentRepository(
+  prismaClient.getClient()
+);

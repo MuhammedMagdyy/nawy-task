@@ -1,10 +1,10 @@
 import { Prisma } from '@prisma/client';
-import { apartmentRepo, apartmentRepository } from '../repositories';
+import { apartmentRepository, ApartmentRepository } from '../repositories';
 import { ApiError } from '../utils';
 import { IFilterQuery, IPaginationQuery } from '../interfaces';
 
 export class ApartmentService {
-  constructor(private readonly apartmentRepository: apartmentRepository) {}
+  constructor(private readonly apartmentRepository: ApartmentRepository) {}
 
   async createApartment(data: Prisma.ApartmentUncheckedCreateInput) {
     return this.apartmentRepository.createApartment(data);
@@ -35,4 +35,4 @@ export class ApartmentService {
   }
 }
 
-export const apartmentService = new ApartmentService(apartmentRepo);
+export const apartmentService = new ApartmentService(apartmentRepository);
