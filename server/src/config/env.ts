@@ -8,7 +8,6 @@ function env(name: string, required = true): string | undefined {
   const value = process.env[name];
 
   if (required && !value) {
-    console.log('Environment variable', name, 'is required but not found.');
     logger.error(`Environment variable ${name} is required but not found.`);
     process.exit(1);
   }
