@@ -4,13 +4,13 @@ import {
   getApartmentDetailsHandler,
   getApartmentsHandler,
 } from '../controllers';
-import { multerMiddlewareUpload } from '../middlewares';
+import { isAuth, multerMiddlewareUpload } from '../middlewares';
 
 const router = Router();
 
 router
   .route('/')
-  .post(multerMiddlewareUpload.single('image'), createApartmentHandler)
+  .post(isAuth, multerMiddlewareUpload.single('image'), createApartmentHandler)
   .get(getApartmentsHandler);
 router.route('/:id').get(getApartmentDetailsHandler);
 
