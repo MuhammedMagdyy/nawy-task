@@ -1,5 +1,5 @@
 import { ILoginUser, IRegisterUser } from '../interfaces';
-import { HashingService, JwtService, userService } from '../services';
+import { HashingService, JwtService, userService } from '.';
 import { ApiError, CONFLICT, logger, UNAUTHORIZED } from '../utils';
 import { BaseAuthService } from './base';
 
