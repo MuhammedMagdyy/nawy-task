@@ -20,6 +20,7 @@ services:
     restart: unless-stopped
     command: >
       sh -c "
+      until nc -z db 3306; do echo 'Waiting for MySQL to start...' && sleep 1; done &&
       npm run db:push &&
       npm run dev"
 
@@ -30,6 +31,8 @@ services:
       - '3306:3306'
     env_file:
       - .env
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     volumes:
       - db-data:/var/lib/mysql
     restart: unless-stopped
