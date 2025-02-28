@@ -12,10 +12,22 @@
 
 ## 📚 Table of Contents
 
+- [🌟 Features](#-features)
 - [📖 API Documentation](#-api-documentation)
   - [🚀 Postman](#-postman)
 - [🛠️ Getting Started](#️-getting-started)
   - [📦 Installing](#-installing)
+
+---
+
+## 🌟 Features
+
+- **Authentication & Authorization** using JWT🔐
+- List of **Apartments** with ability to **search** and **filter** 🏠
+  - [x] **Pagination** for the list of apartments
+  - [x] **Search** by **unit name** or **unit number** or **project**
+  - [x] **Filter** by **unit name** or **unit number** or **project**
+- Get **Apartment** details 🏠
 
 ---
 
