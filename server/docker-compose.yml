@@ -1,0 +1,43 @@
+services:
+  app:
+    container_name: apartment-app
+    build:
+      context: .
+      target: ${NODE_ENV}
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env
+    environment:
+      - PORT=3000
+      - DATABASE_URL=${DATABASE_URL}
+      - NODE_ENV=${NODE_ENV}
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - db
+    restart: unless-stopped
+    command: >
+      sh -c "
+      npm run db:push &&
+      npm run dev"
+
+  db:
+    container_name: apartment-db
+    image: mysql:8.0
+    ports:
+      - '3306:3306'
+    env_file:
+      - .env
+    volumes:
+      - db-data:/var/lib/mysql
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
+volumes:
+  db-data:
