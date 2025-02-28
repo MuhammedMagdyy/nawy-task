@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
-import { port, prismaClient } from './config';
+import { nodeEnv, port, prismaClient } from './config';
 import { errorHandler } from './middlewares';
 import routes from './routes';
 import { logger } from './utils';
@@ -22,7 +22,7 @@ export const up = async () => {
     await prismaClient.connect();
 
     const server = app.listen(port, () => {
-      logger.info(`Server is running on ${port} 🚀`);
+      logger.info(`Server is running on ${port} 🚀 in ${nodeEnv} mode`);
     });
 
     process.on('SIGINT', async () => {
